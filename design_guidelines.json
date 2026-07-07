@@ -1,0 +1,97 @@
+{
+  "theme": "Light",
+  "archetype": "3 (Pastel & Soft) - Playful, hand-drawn notebook aesthetic",
+  "color_palette": {
+    "background": {
+      "main": "#FDFBF7",
+      "paper_texture_notes": "Use a subtle CSS radial-gradient to create a dotted notebook paper effect, e.g., radial-gradient(circle, #E5E5E5 1px, transparent 1px) with background-size: 24px 24px."
+    },
+    "text": {
+      "primary": "#3A3A3A",
+      "handwriting_accent": "#D9534F",
+      "muted": "#6B7280"
+    },
+    "cards_pastel": {
+      "pink": "#FFD1DC",
+      "yellow": "#FFF5BA",
+      "mint": "#D4F0F0",
+      "blue": "#C1E1DC",
+      "lavender": "#E2D7F4",
+      "peach": "#FFDFD3"
+    },
+    "accents": {
+      "washi_red": "#E85D75",
+      "washi_blue": "#73C2FB",
+      "washi_yellow": "#F4D03F"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Caveat",
+      "body": "Nunito",
+      "import_url": "https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+    },
+    "styles": {
+      "h1": "text-4xl sm:text-5xl font-caveat text-[#3A3A3A] tracking-tight",
+      "h2_card_title": "text-2xl sm:text-3xl font-caveat text-[#D9534F] transform -rotate-2 inline-block mb-3",
+      "body": "text-base font-nunito text-[#3A3A3A] leading-relaxed",
+      "small_label": "text-sm font-nunito text-[#6B7280] uppercase tracking-wider"
+    }
+  },
+  "layout_system": {
+    "spacing_philosophy": "Generous Spacing Philosophy. Use p-4 to p-6 inside sticky note cards. Gap-6 between cards in the masonry/bento grid.",
+    "main_grid": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6 items-start auto-rows-min",
+    "card_style": "relative p-5 rounded-sm shadow-[4px_4px_12px_rgba(0,0,0,0.06)] border border-[#E5E7EB]/50 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg",
+    "card_rotations": "Apply subtle random rotations to cards (e.g., -rotate-1, rotate-1, -rotate-2) to emphasize the messy notebook feel.",
+    "decorative_elements": {
+      "washi_tape": "absolute w-12 h-5 bg-[#E85D75]/60 -top-2 left-1/2 -translate-x-1/2 rotate-3 backdrop-blur-sm shadow-sm"
+    }
+  },
+  "component_guidelines": {
+    "forms_and_inputs": "Use Shadcn components but override borders to be 1px solid #D1D5DB, rounded-md, with a subtle focus ring. Use transparent backgrounds for inputs inside pastel cards.",
+    "checkboxes": "Use Shadcn Checkbox, but style them to look slightly rounded or use custom SVG for a 'drawn checkmark' feel when checked.",
+    "buttons": "Primary buttons: bg-[#3A3A3A] text-white font-nunito font-semibold rounded-md px-6 py-2 shadow-sm hover:bg-[#222222] transition-colors.",
+    "calendar_datepicker": "Use Shadcn Calendar. Style the active/selected date with a circle background in a pastel color (e.g., #FFD1DC) and handwriting font for the selected date.",
+    "icons": "Use 'lucide-react' with strokeWidth={1.5} for a lighter, drawn feel. Alternatively, install 'phosphor-icons' for duotone styles if needed."
+  },
+  "page_specific_instructions": {
+    "auth_pages": "Login/Signup should look like the cover of a journal or a clean desk surface with a notepad in the center. Use the paper dot-grid background.",
+    "dashboard_header": "Header should contain the Brand Logo (font-caveat, text-4xl), an interactive DatePicker (calendar), and User Profile/Logout. Use glassmorphism or simple off-white solid bg with a hand-drawn bottom border (e.g., border-b-2 border-dashed border-[#D1D5DB]).",
+    "planner_cards_mapping": [
+      { "name": "Top Priorities", "color": "bg-[#FFF5BA]", "features": "Numbered list 1-3 with checkboxes." },
+      { "name": "Appointments", "color": "bg-[#FFD1DC]", "features": "Time slot input + text note." },
+      { "name": "Personal To-Do", "color": "bg-[#D4F0F0]", "features": "Standard bulleted checklist." },
+      { "name": "Life Balance", "color": "bg-[#C1E1DC]", "features": "2x2 grid containing Health, Family, Fun, Spiritual." },
+      { "name": "Daily Schedules", "color": "bg-[#E2D7F4]", "features": "Tall card, scrolling list from 6 AM to 11 PM with time and input field." },
+      { "name": "Meal Planning", "color": "bg-[#FFDFD3]", "features": "Breakfast, Lunch, Snacks, Dinner sections." },
+      { "name": "Water Tracker", "color": "bg-[#FDFBF7]", "features": "8 clickable glass/drop icons filling up." },
+      { "name": "Expense Tracker", "color": "bg-[#FFF5BA]", "features": "List of Item + Amount, and a Total line." },
+      { "name": "Rate your Day", "color": "bg-[#FFD1DC]", "features": "Productivity (Stars), Mood (Smileys), Health (Hearts)." }
+    ]
+  },
+  "animations_and_interactions": {
+    "hover": "Cards should have a slight lift (hover:-translate-y-1) and increased shadow. Buttons should scale slightly (hover:scale-[1.02]).",
+    "focus": "Inputs inside cards should have a subtle bottom border highlight rather than a full box ring to mimic writing on a line.",
+    "page_load": "Cards should stagger in using framer-motion (fade in and slide up slightly)."
+  },
+  "accessibility_and_testing": {
+    "contrast": "Ensure text colors against pastel backgrounds meet at least AA contrast ratio. The #3A3A3A text on pastels easily passes.",
+    "testing": "All interactive elements MUST have data-testid attributes (e.g., data-testid='save-planner-button', data-testid='todo-checkbox-1')."
+  },
+  "image_urls": {
+    "description": "Media URLs to be used for backgrounds, textures, or empty states. Do not use placeholder images.",
+    "paper_texture": "https://images.unsplash.com/photo-1698067942087-53f552fe2f59?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHwyfHxub3RlYm9vayUyMHBhcGVyJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODM0NTA5ODR8MA&ixlib=rb-4.1.0&q=85",
+    "washi_tape_decor": "https://images.unsplash.com/photo-1602629978851-125a3b62f3d8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwxfHx3YXNoaSUyMHRhcGV8ZW58MHx8fHwxNzgzNDUwOTg0fDA&ixlib=rb-4.1.0&q=85",
+    "empty_state_doodles": "https://images.unsplash.com/photo-1627852682194-f793ca7a2035?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNDR8MHwxfHNlYXJjaHwyfHxoYW5kJTIwZHJhd24lMjBkb29kbGVzfGVufDB8fHx8MTc4MzQ1MDk4NHww&ixlib=rb-4.1.0&q=85"
+  },
+  "instructions_to_main_agent": [
+    "Do NOT use 'Inter' font for anything. Use 'Caveat' for headings and 'Nunito' for body text. Update index.html to include the Google Fonts import URL.",
+    "Set up Tailwind config to extend colors with the provided hex codes and add 'caveat' and 'nunito' to font families.",
+    "Build the dashboard using a CSS grid or Masonry layout for the sticky note cards to mimic a messy desk/planner.",
+    "Avoid using Shadcn 'Card' components for the main sticky notes, as they have predefined styles that might conflict. Use raw divs with Tailwind classes like rounded-sm, shadow-md, and pastel background colors.",
+    "Ensure the 'Daily Schedules' card uses max-height and custom scrollbar so it doesn't break the layout.",
+    "Implement JWT-based custom auth, with users loading their specific day's data based on user_id and selected date.",
+    "Add decorative CSS elements like pseudo-elements for 'washi tape' or 'spiral bindings' to enhance the physical notebook feel.",
+    "Add data-testid to all interactive elements."
+  ]
+}
