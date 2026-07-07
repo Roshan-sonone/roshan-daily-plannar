@@ -1,0 +1,41 @@
+{
+  "summary": "First-finish smoke test of Daily Planner. Backend auth + planner CRUD endpoints all functional (login, register, me, planner GET/PUT, dates). Frontend loads, protected redirect works, dashboard renders all 13 card headers, date-picker/save/logout testids present. However a critical UI regression prevents users from entering data into most cards: for a fresh date the backend returns empty arrays which overwrite the frontend defaults in DashboardPage loadDay, so priority/todo/appointment/personal_todo/contact/expense INPUT ROWS never render (only headers show). Water tracker, notes, tomorrow notes and rating still work.",
+  "tested_scope": ["frontend", "backend", "auth", "integration"],
+  "passed": [
+    "POST /api/auth/login (admin) -> 200 with user + token",
+    "GET /api/auth/me with cookie -> 200",
+    "POST /api/auth/register new user -> 200 (sets cookies, logs in)",
+    "GET /api/planner/2025-11-15 (auth) -> 200 with schema-correct empty data",
+    "PUT /api/planner/2025-11-15 -> 200 {ok:true}",
+    "GET /api/planner/dates -> 200 list of dates",
+    "Unauthenticated /api/auth/me, /api/planner/* -> 401 as expected",
+    "Data isolation: new user's GET /api/planner/2025-11-15 returns empty (not admin's saved data)",
+    "Frontend: unauthenticated / redirects to /login",
+    "Frontend: admin login redirects to / (dashboard) and shows 'Hi, Admin'",
+    "Frontend: date-picker-trigger, save-planner-button, logout-button, notes-textarea, water-drop-0, expense-total testids present",
+    "Frontend: logout button clears session and returns to /login",
+    "Frontend: registration form on /register works end-to-end and lands on dashboard"
+  ],
+  "failed": [
+    {
+      "area": "frontend/DashboardPage.jsx loadDay",
+      "issue": "For any date where the backend returns empty arrays (top_priorities:[], todo_list:[], appointments:[], personal_todo:[], contacts:[], expenses:[]) the merge `setData({ ...emptyPlannerData(), ...res.data })` OVERWRITES the seeded default rows with the empty arrays. As a result the Top Priorities, To Do List, Appointments, Personal To-Do, Calls/Email/Text and Expense Tracker cards render only their header/tape — no input rows exist for the user to type into. Users have no way to enter priorities, todos, appointments, or expenses (except via the single add-expense-button).",
+      "evidence": "Screenshot after admin login shows Top Priorities / To Do List / Personal To-Do cards visually empty with no <input>. Playwright: locator('[data-testid=\"priority-input-0\"]').count() == 0, locator('[data-testid=\"todo-input-0\"]').count() == 0, locator('[data-testid=\"expense-item-0\"]').count() == 0 while water-drop-0, notes-textarea, expense-total ARE present. Code: /app/frontend/src/pages/DashboardPage.jsx line 31 `setData({ ...emptyPlannerData(), ...res.data })` combined with backend PlannerData default_factory=list at /app/backend/server.py.",
+      "priority": "HIGH"
+    },
+    {
+      "area": "backend/logout cookie clearing (minor)",
+      "issue": "POST /api/auth/logout returns {ok:true} but the Set-Cookie deletion headers do not appear to unset the access_token cookie in curl's jar (cookie value remains and JWT is still usable until natural expiry). In browsers the logout works (verified via Playwright — user is bounced to /login and cannot access dashboard).",
+      "evidence": "curl -c jar; POST /api/auth/logout; jar still contains access_token JWT that continues to authenticate GET /api/auth/me.",
+      "priority": "LOW"
+    }
+  ],
+  "action_items": [
+    "Fix DashboardPage loadDay merge so empty arrays from backend do NOT wipe default input rows. Suggested: deep-merge or replace empty arrays with defaults, e.g. `const d = res.data; const def = emptyPlannerData(); setData({ ...def, ...d, top_priorities: d.top_priorities?.length ? d.top_priorities : def.top_priorities, todo_list: d.todo_list?.length ? d.todo_list : def.todo_list, appointments: ..., personal_todo: ..., contacts: ..., expenses: ... });` Alternative: have backend GET /api/planner/{date} return the same default rows (3 priorities, 8 todos, etc.) when a record does not yet exist.",
+    "Optionally add explicit 'Add row' buttons for lists so users can extend beyond defaults.",
+    "Verify backend logout uses response.delete_cookie(...) with the same path/domain/secure/samesite=None used at set time so browsers/curl consistently drop the cookie."
+  ],
+  "success_rate": {"backend": "100%", "frontend": "60%"},
+  "retest_needed": true,
+  "full_testing_deferred": true
+}
