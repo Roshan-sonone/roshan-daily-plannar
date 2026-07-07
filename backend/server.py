@@ -258,7 +258,7 @@ def _validate_date(date_str: str) -> str:
 @api_router.get("/planner/dates")
 async def list_planner_dates(user: dict = Depends(get_current_user)):
     """Return list of dates where the user has planner data saved."""
-    cursor = db.planners.find({"user_id": user["id"]}, {"date": 1, "_id": 0})
+    cursor = db.planners.find({"user_id": user["id"]}, {"date": 1, "_id": 0}).limit(1000)
     dates = [doc["date"] async for doc in cursor]
     return {"dates": sorted(dates)}
 
