@@ -28,7 +28,29 @@ export default function DashboardPage() {
     skipNextSave.current = true;
     try {
       const { data: res } = await http.get(`/planner/${d}`);
-      setData({ ...emptyPlannerData(), ...res.data });
+      const def = emptyPlannerData();
+      const incoming = res.data || {};
+      // Merge: for list fields, empty from backend => use defaults (seed rows)
+      const listKeys = [
+        "top_priorities",
+        "appointments",
+        "personal_todo",
+        "todo_list",
+        "contacts",
+        "expenses",
+      ];
+      const merged = { ...def, ...incoming };
+      for (const k of listKeys) {
+        if (!Array.isArray(incoming[k]) || incoming[k].length === 0) {
+          merged[k] = def[k];
+        }
+      }
+      // life_balance, meals, rating: merge object shallowly
+      merged.life_balance = { ...def.life_balance, ...(incoming.life_balance || {}) };
+      merged.meals = { ...def.meals, ...(incoming.meals || {}) };
+      merged.rating = { ...def.rating, ...(incoming.rating || {}) };
+      merged.schedule = { ...(incoming.schedule || {}) };
+      setData(merged);
       setDirty(false);
     } catch {
       toast.error("Failed to load planner");

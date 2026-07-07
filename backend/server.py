@@ -207,8 +207,15 @@ async def login(payload: LoginInput, request: Request, response: Response):
 
 @api_router.post("/auth/logout")
 async def logout(response: Response, _user: dict = Depends(get_current_user)):
-    response.delete_cookie("access_token", path="/")
-    response.delete_cookie("refresh_token", path="/")
+    # Overwrite with expired cookies using the same attributes used at set time
+    response.set_cookie(
+        key="access_token", value="", httponly=True,
+        secure=True, samesite="none", max_age=0, path="/",
+    )
+    response.set_cookie(
+        key="refresh_token", value="", httponly=True,
+        secure=True, samesite="none", max_age=0, path="/",
+    )
     return {"ok": True}
 
 
